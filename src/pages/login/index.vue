@@ -1,8 +1,8 @@
 <template>
   <div class="form-login">
-    <div class="logo">
+    <figure class="logo">
       <v-img src="/a+_logo.svg" width="120px" :aspect-ratio="16 / 9" />
-    </div>
+    </figure>
     <v-form @submit.prevent="handleSubmit" v-model="formData.isValid">
       <v-text-field
         v-model="formData.username"
@@ -16,7 +16,12 @@
         label="Password"
         :rules="[required]"
       />
-      <v-btn type="submit" width="100%" height="45px" color="primary">
+      <v-btn
+        type="submit"
+        width="100%"
+        height="45px"
+        color="var(--color-primary)"
+      >
         Login
       </v-btn>
     </v-form>
@@ -66,6 +71,14 @@ const handleSubmit = () => {
   form {
     width: 90vw;
     max-width: 400px;
+
+    .v-input__details {
+      padding-bottom: 5px;
+    }
+
+    button {
+      color: white;
+    }
   }
 }
 </style>

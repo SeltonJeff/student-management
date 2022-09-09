@@ -28,6 +28,6 @@ const handleGetLayout = () =>
   AppLayouts[store.state.layout.current] || AppLayouts["default"];
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "./assets/scss/main.scss";
 </style>

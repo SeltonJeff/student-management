@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout">
-    <div class="sidebar" />
+    <Side />
     <div class="page-content">
       !Header here!
       <slot />
@@ -8,16 +8,13 @@
   </div>
 </template>
 
+<script setup lang="ts">
+import Side from "../components/_layout/Side/index.vue";
+</script>
+
 <style scoped lang="scss">
 .app-layout {
   display: flex;
-
-  .sidebar {
-    position: relative;
-    height: 100vh;
-    width: 350px;
-    background-color: blue;
-  }
 
   .page-content {
     position: relative;
