@@ -2,30 +2,30 @@
   <v-container tag="center">
     <v-card class="form-wrapper" :loading="isFetching">
       <v-card-title> Cadastro de Estudante </v-card-title>
-      <v-form v-model="editFormData.isValid" @submit.prevent="handleSubmit">
+      <v-form v-model="formData.isValid" @submit.prevent="handleSubmit">
         <v-text-field
-          v-model="editFormData.name"
+          v-model="formData.name"
           label="Nome"
           placeholder="Informe o nome completo"
           type="text"
           :rules="[required]"
         ></v-text-field>
         <v-text-field
-          v-model="editFormData.email"
+          v-model="formData.email"
           label="Email"
           placeholder="Informe apenas um email"
           type="email"
           :rules="[required]"
         ></v-text-field>
         <v-text-field
-          v-model="editFormData.ra"
+          v-model="formData.ra"
           label="RA"
           placeholder="Informe o registro acadêmico"
           type="text"
           :rules="[required]"
         ></v-text-field>
         <v-text-field
-          v-model="editFormData.cpf"
+          v-model="formData.cpf"
           label="CPF"
           placeholder="Informe o CPF"
           type="text"
@@ -57,6 +57,8 @@
 import { reactive, ref } from "vue";
 import { required } from "../../../utils/validators";
 import AppRouter from "../../../routes";
+import { useStore } from "vuex";
+import { TAppState } from "../../../store";
 
 type TEditFormData = {
   isValid: boolean;
@@ -66,7 +68,7 @@ type TEditFormData = {
   cpf: string;
 };
 
-const editFormData = reactive<TEditFormData>({
+const formData = reactive<TEditFormData>({
   isValid: false,
   ra: "",
   name: "",
@@ -74,14 +76,23 @@ const editFormData = reactive<TEditFormData>({
   cpf: "",
 });
 
+const store = useStore<TAppState>();
+
 const isFetching = ref(false);
 
 const handleBack = () => AppRouter.go(-1);
 const handleSubmit = () => {
-  if (editFormData.isValid) {
+  if (formData.isValid) {
     isFetching.value = true;
-    console.log(editFormData);
-    setTimeout(() => (isFetching.value = false), 3000);
+    console.log(formData);
+    setTimeout(() => {
+      store.dispatch("alert", {
+        type: "success",
+        content: "Studante cadastrado com sucesso!",
+      });
+      handleBack();
+      isFetching.value = false;
+    }, 3000);
   }
 };
 </script>

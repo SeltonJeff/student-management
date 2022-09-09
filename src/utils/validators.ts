@@ -1,1 +1,2 @@
-export const required = (value: string) => !!value || "This field is required.";
+export const required = (value: string) =>
+  !!value || "Este campo é obrigatório.";

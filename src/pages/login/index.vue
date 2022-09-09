@@ -1,5 +1,5 @@
 <template>
-  <div class="form-login">
+  <v-container class="form-login">
     <figure class="logo">
       <v-img src="/a+_logo.svg" width="120px" :aspect-ratio="16 / 9" />
     </figure>
@@ -17,6 +17,7 @@
         :rules="[required]"
       />
       <v-btn
+        :loading="isFetching"
         type="submit"
         width="100%"
         height="45px"
@@ -25,7 +26,7 @@
         Login
       </v-btn>
     </v-form>
-  </div>
+  </v-container>
 </template>
 
 <script setup lang="ts">
@@ -43,6 +44,7 @@ const formData = ref<TFormData>({
   username: "",
   password: "",
 });
+const isFetching = ref(false);
 
 const handleSubmit = () => {
   function validateUser({ username, password }: TFormData) {
@@ -50,7 +52,8 @@ const handleSubmit = () => {
   }
 
   if (formData.value.isValid && validateUser(formData.value)) {
-    router.push("/dashboard");
+    isFetching.value = true;
+    setTimeout(() => router.push("/dashboard"), 2000);
   }
 };
 </script>

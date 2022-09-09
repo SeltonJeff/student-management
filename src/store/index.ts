@@ -1,16 +1,16 @@
 import { createStore } from "vuex";
-import { AlertStore, TAlertState } from "./alerts";
+import { AlertStore, TAlertState } from "./alert";
 import { LayoutStore, TLayoutState } from "./layouts";
 import { StudentStore, TStudentState } from "./student";
 
 export type TAppState = {
-  alert: TAlertState;
   layout: TLayoutState;
+  alert: TAlertState;
   student: TStudentState;
 };
 
 const AppStore = createStore({
-  modules: { alert: AlertStore, layout: LayoutStore, student: StudentStore },
+  modules: { layout: LayoutStore, alert: AlertStore, student: StudentStore },
 });
 
 export default AppStore;

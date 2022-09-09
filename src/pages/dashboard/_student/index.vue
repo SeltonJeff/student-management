@@ -131,7 +131,13 @@ const handleDelete = () => {
   isFetching.value = true;
   console.log(selectedStudentForDelete.value);
   showConfirmDeleteStudent.value = false;
-  setTimeout(() => (isFetching.value = false), 3000);
+  setTimeout(() => {
+    store.dispatch("alert", {
+      type: "success",
+      content: "Studante deletado com sucesso!",
+    });
+    isFetching.value = false;
+  }, 3000);
 };
 </script>
 
