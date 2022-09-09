@@ -1,7 +1,7 @@
 <template>
   <v-container tag="center">
     <v-card class="form-wrapper" :loading="isFetching">
-      <v-card-title> Cadastro de Estudante </v-card-title>
+      <v-card-title> Editar cadastro de estudante </v-card-title>
       <v-form v-model="editFormData.isValid" @submit.prevent="handleSubmit">
         <v-text-field
           v-model="editFormData.name"
@@ -54,9 +54,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { useStore } from "vuex";
 import { required } from "../../../utils/validators";
 import AppRouter from "../../../routes";
+import { TAppState } from "../../../store";
+
+const store = useStore<TAppState>();
 
 type TEditFormData = {
   isValid: boolean;
@@ -75,6 +79,14 @@ const editFormData = reactive<TEditFormData>({
 });
 
 const isFetching = ref(false);
+
+onMounted(() => {
+  const { ra, name, email, cpf } = store.state.student.studentToEdit;
+  editFormData.ra = ra;
+  editFormData.name = name;
+  editFormData.email = email;
+  editFormData.cpf = cpf;
+});
 
 const handleBack = () => AppRouter.go(-1);
 const handleSubmit = () => {

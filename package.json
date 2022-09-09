@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@devindex/vue-mask": "^2.0.3",
+    "@mdi/font": "^7.0.96",
+    "@types/": "devindex/vue-mask",
+    "axios": "^0.27.2",
     "vue": "^3.2.37",
     "vue-router": "4",
     "vuetify": "^3.0.0-beta.10",

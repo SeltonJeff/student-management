@@ -3,7 +3,7 @@
     <v-col align="center">
       <v-img src="/a+_logo.svg" width="100px" :aspect-ratio="16 / 9" />
       <v-list v-model="selectedMenuItem">
-        <v-list-subheader>Menu</v-list-subheader>
+        <v-list-subheader>Módulo acadêmico</v-list-subheader>
         <v-divider style="margin-bottom: 8px" />
         <v-list-item
           v-for="(item, itemIndex) in menu"
@@ -26,7 +26,7 @@
 import { defineComponent, ref } from "vue";
 
 type TMenuItem = { text: string; link: string };
-const menu = [{ text: "Alunos", link: "#" }];
+const menu = [{ text: "Alunos", link: "/dashboard/student/" }];
 
 const selectedMenuItem = ref("Alunos");
 
@@ -45,6 +45,7 @@ defineComponent({
   height: 100vh;
   width: 350px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding-top: 20px;
   z-index: 10;
 }
 </style>

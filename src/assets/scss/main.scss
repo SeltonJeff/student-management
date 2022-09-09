@@ -1,5 +1,9 @@
+@import "./animations";
 :root {
   --color-primary: #EA4234;
+  --color-primary-opacity: rgba(234, 66, 52, 0.2);
+  --color-secondary: #4DAAB0;
+  --color-secondary-opacity: rgba(77, 170, 176, 0.2);
 }
 
 *, *::before, *::after {

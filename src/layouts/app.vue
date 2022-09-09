@@ -1,10 +1,9 @@
 <template>
   <div class="app-layout">
     <Side />
-    <div class="page-content">
-      !Header here!
+    <v-container class="page-content">
       <slot />
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -20,8 +19,9 @@ import Side from "../components/_layout/Side/index.vue";
     position: relative;
     height: 100vh;
     width: calc(100% - 350px);
-    background-color: orange;
     overflow-y: auto;
+    padding: 20px;
+    background-color: rgba(230, 230, 230);
   }
 }
 </style>
