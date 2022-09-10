@@ -4,6 +4,14 @@
       <v-card-title> Editar cadastro de estudante </v-card-title>
       <v-form v-model="formData.isValid" @submit.prevent="handleSubmit">
         <v-text-field
+          v-model="formData.ra"
+          label="RA"
+          placeholder="Informe o registro acadêmico"
+          type="text"
+          :rules="[required]"
+          disabled
+        ></v-text-field>
+        <v-text-field
           v-model="formData.name"
           label="Nome"
           placeholder="Informe o nome completo"
@@ -15,14 +23,7 @@
           label="Email"
           placeholder="Informe apenas um email"
           type="email"
-          :rules="[required]"
-        ></v-text-field>
-        <v-text-field
-          v-model="formData.ra"
-          label="RA"
-          placeholder="Informe o registro acadêmico"
-          type="text"
-          :rules="[required]"
+          :rules="[required, email]"
         ></v-text-field>
         <v-text-field
           v-model="formData.cpf"
@@ -31,7 +32,7 @@
           type="text"
           v-mask="'###.###.###-##'"
           maxlength="14"
-          :rules="[required]"
+          :rules="[required, cpf]"
         ></v-text-field>
 
         <v-row justify="end" class="action-buttons">
@@ -56,9 +57,10 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
-import { required } from "../../../utils/validators";
+import { required, cpf, email } from "../../../utils/validators";
 import AppRouter from "../../../routes";
 import { TAppState } from "../../../store";
+import { Api } from "../../../api";
 
 const store = useStore<TAppState>();
 
@@ -77,8 +79,36 @@ const formData = reactive<TEditFormData>({
   email: "",
   cpf: "",
 });
-
 const isFetching = ref(false);
+
+const handleBack = () => AppRouter.go(-1);
+const handleSubmit = async () => {
+  const { name, email, cpf, ...attr } = formData;
+  if (formData.isValid) {
+    try {
+      isFetching.value = true;
+      console.log(formData);
+      await Api.patch(`/student/${attr.ra}`, {
+        name,
+        email,
+        cpf,
+      });
+      await store.dispatch("alert", {
+        type: "success",
+        content: "Dados cadstrais editados com sucesso!",
+      });
+    } catch (error) {
+      console.log(error);
+      await store.dispatch("alert", {
+        type: "error",
+        content: "Erro ao editar dados do estudante!",
+      });
+    } finally {
+      isFetching.value = false;
+      handleBack();
+    }
+  }
+};
 
 onMounted(() => {
   const { ra, name, email, cpf } = store.state.student.studentToEdit;
@@ -87,22 +117,6 @@ onMounted(() => {
   formData.email = email;
   formData.cpf = cpf;
 });
-
-const handleBack = () => AppRouter.go(-1);
-const handleSubmit = () => {
-  if (formData.isValid) {
-    isFetching.value = true;
-    console.log(formData);
-    setTimeout(() => {
-      store.dispatch("alert", {
-        type: "success",
-        content: "Cadastro editado com sucesso!",
-      });
-      handleBack();
-      isFetching.value = false;
-    }, 3000);
-  }
-};
 </script>
 
 <style scoped lang="scss">

@@ -13,7 +13,7 @@
           @click:append-inner="handleSearch"
           @keydown="
             (event) => {
-              if (query.length >= 3 && event.key === 'Enter') handleSearch();
+              if (event.key === 'Enter') handleSearch();
             }
           "
         />
@@ -104,6 +104,7 @@ import { useStore } from "vuex";
 import { TAppState } from "../../../store";
 import { TStudent } from "../../../store/student";
 import AppRouter from "../../../routes";
+import { Api } from "../../../api";
 
 const store = useStore<TAppState>();
 
@@ -118,27 +119,48 @@ onMounted(() => {
   ]);
 });
 
-const handleSearch = () => {
+const handleFetchStudents = async () => {
   isFetching.value = true;
-  console.log(query.value);
-  setTimeout(() => (isFetching.value = false), 2000);
+  const result = await Api.get("/student");
+  await store.dispatch("setStudents", result.data);
+  isFetching.value = false;
+};
+const handleSearch = async () => {
+  isFetching.value = true;
+  const result = await Api.get(`/student/${query.value}`);
+  await store.dispatch("setStudents", result.data);
+  isFetching.value = false;
 };
 const handleEdit = (student: TStudent) => {
   store.dispatch("setStudentToEdit", student);
   AppRouter.push("/dashboard/student/edit");
 };
-const handleDelete = () => {
-  isFetching.value = true;
-  console.log(selectedStudentForDelete.value);
-  showConfirmDeleteStudent.value = false;
-  setTimeout(() => {
-    store.dispatch("alert", {
+const handleDelete = async () => {
+  try {
+    isFetching.value = true;
+    showConfirmDeleteStudent.value = false;
+    const { ra } = selectedStudentForDelete.value!;
+    const result = await Api.delete(`/student/${ra}`);
+    console.log(result.data);
+    await store.dispatch("alert", {
       type: "success",
-      content: "Studante deletado com sucesso!",
+      content: "Estudante deletado com sucesso!",
     });
+  } catch (error) {
+    console.log(error);
+    await store.dispatch("alert", {
+      type: "error",
+      content: "Erro ao tentar deletar estudante!",
+    });
+  } finally {
     isFetching.value = false;
-  }, 3000);
+    await handleFetchStudents();
+  }
 };
+
+onMounted(() => {
+  handleFetchStudents();
+});
 </script>
 
 <style scoped lang="scss">

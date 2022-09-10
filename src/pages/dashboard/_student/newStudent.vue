@@ -4,6 +4,13 @@
       <v-card-title> Cadastro de Estudante </v-card-title>
       <v-form v-model="formData.isValid" @submit.prevent="handleSubmit">
         <v-text-field
+          v-model="formData.ra"
+          label="RA"
+          placeholder="Informe o registro acadêmico"
+          type="text"
+          :rules="[required]"
+        ></v-text-field>
+        <v-text-field
           v-model="formData.name"
           label="Nome"
           placeholder="Informe o nome completo"
@@ -15,14 +22,7 @@
           label="Email"
           placeholder="Informe apenas um email"
           type="email"
-          :rules="[required]"
-        ></v-text-field>
-        <v-text-field
-          v-model="formData.ra"
-          label="RA"
-          placeholder="Informe o registro acadêmico"
-          type="text"
-          :rules="[required]"
+          :rules="[required, email]"
         ></v-text-field>
         <v-text-field
           v-model="formData.cpf"
@@ -31,7 +31,7 @@
           type="text"
           v-mask="'###.###.###-##'"
           maxlength="14"
-          :rules="[required]"
+          :rules="[required, cpf]"
         ></v-text-field>
 
         <v-row justify="end" class="action-buttons">
@@ -55,10 +55,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { required } from "../../../utils/validators";
-import AppRouter from "../../../routes";
 import { useStore } from "vuex";
+import { required, cpf, email } from "../../../utils/validators";
+import AppRouter from "../../../routes";
 import { TAppState } from "../../../store";
+import { Api } from "../../../api";
 
 type TEditFormData = {
   isValid: boolean;
@@ -81,18 +82,27 @@ const store = useStore<TAppState>();
 const isFetching = ref(false);
 
 const handleBack = () => AppRouter.go(-1);
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (formData.isValid) {
-    isFetching.value = true;
-    console.log(formData);
-    setTimeout(() => {
-      store.dispatch("alert", {
-        type: "success",
-        content: "Studante cadastrado com sucesso!",
+    try {
+      isFetching.value = true;
+      await Api.post("/student", {
+        ...formData,
       });
-      handleBack();
+      await store.dispatch("alert", {
+        type: "success",
+        content: "Estudante cadastrado com sucesso!",
+      });
+    } catch (error) {
+      console.log(error);
+      await store.dispatch("alert", {
+        type: "error",
+        content: "Erro ao tentar cadastrar estudante!",
+      });
+    } finally {
       isFetching.value = false;
-    }, 3000);
+      handleBack();
+    }
   }
 };
 </script>
