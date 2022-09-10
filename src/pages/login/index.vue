@@ -36,6 +36,7 @@ import router from "../../routes";
 import { Api } from "../../api";
 import AppRouter from "../../routes";
 import errorHandler from "../../utils/errorHandler";
+import store from "../../store";
 
 type TFormData = {
   isValid: boolean;
@@ -43,9 +44,9 @@ type TFormData = {
   password: string;
 };
 const formData = ref<TFormData>({
-  isValid: false,
-  email: "admin@mailinator.com",
-  password: "admin",
+  isValid: true,
+  email: "",
+  password: "",
 });
 const isFetching = ref(false);
 
@@ -58,7 +59,11 @@ const handleSubmit = async () => {
       if (result) {
         localStorage.setItem("access_token", result.data.access_token);
         localStorage.setItem("refresh_token", result.data.refresh_token);
-        isFetching.value = false;
+        await store.dispatch("setUser", {
+          data: result.data.user,
+          access_token: result.data.access_token,
+          refresh_token: result.data.refresh_token,
+        });
         await AppRouter.push({ path: "/dashboard" });
       }
     } catch (error) {

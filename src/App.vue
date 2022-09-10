@@ -5,6 +5,15 @@
         <component :is="Component" />
       </transition>
     </router-view>
+    <v-dialog
+      v-model="alert.isVisible"
+      @update:modelValue="($event) => store.dispatch('setAlertVisible', $event)"
+      class="dialog__student-deleted"
+    >
+      <v-alert :type="alert.current.type" border="top" prominent>
+        {{ alert.current.content }}
+      </v-alert>
+    </v-dialog>
   </component>
 </template>
 
@@ -19,6 +28,7 @@ const store = useStore<TAppState>();
 const {
   state: {
     layout: { current },
+    alert,
   },
 } = reactive(store);
 
@@ -34,4 +44,19 @@ const handleGetLayout = () =>
 
 <style lang="scss">
 @import "./assets/scss/main.scss";
+
+.v-overlay__content {
+  min-height: 200px;
+  min-width: 400px;
+}
+.v-alert {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .v-alert__prepend {
+    margin: 0;
+  }
+}
 </style>
