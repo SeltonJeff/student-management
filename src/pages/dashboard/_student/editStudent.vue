@@ -64,6 +64,7 @@ import { required, cpf, email } from "../../../utils/validators";
 import AppRouter from "../../../routes";
 import { TAppState } from "../../../store";
 import { Api } from "../../../api";
+import errorHandler from "../../../utils/errorHandler";
 
 const store = useStore<TAppState>();
 
@@ -99,7 +100,7 @@ const handleSubmit = async () => {
         content: "Dados cadstrais editados com sucesso!",
       });
     } catch (error) {
-      console.log(error);
+      await errorHandler(error);
       await store.dispatch("alert", {
         type: "error",
         content: "Erro ao editar dados do estudante!",

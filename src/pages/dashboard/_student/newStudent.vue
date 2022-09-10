@@ -62,6 +62,7 @@ import { required, cpf, email } from "../../../utils/validators";
 import AppRouter from "../../../routes";
 import { TAppState } from "../../../store";
 import { Api } from "../../../api";
+import errorHandler from "../../../utils/errorHandler";
 
 type TEditFormData = {
   isValid: boolean;
@@ -96,7 +97,7 @@ const handleSubmit = async () => {
         content: "Estudante cadastrado com sucesso!",
       });
     } catch (error) {
-      console.log(error);
+      await errorHandler(error);
       await store.dispatch("alert", {
         type: "error",
         content: "Erro ao tentar cadastrar estudante!",

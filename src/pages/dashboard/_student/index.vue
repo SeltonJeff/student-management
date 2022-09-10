@@ -105,6 +105,7 @@ import { TAppState } from "../../../store";
 import { TStudent } from "../../../store/student";
 import AppRouter from "../../../routes";
 import { Api } from "../../../api";
+import errorHandler, { TError } from "../../../utils/errorHandler";
 
 const store = useStore<TAppState>();
 
@@ -120,16 +121,26 @@ onMounted(() => {
 });
 
 const handleFetchStudents = async () => {
-  isFetching.value = true;
-  const result = await Api.get("/student");
-  await store.dispatch("setStudents", result.data);
-  isFetching.value = false;
+  try {
+    isFetching.value = true;
+    const result = await Api.get("/student");
+    await store.dispatch("setStudents", result.data);
+  } catch (error) {
+    await errorHandler(error);
+  } finally {
+    isFetching.value = false;
+  }
 };
 const handleSearch = async () => {
-  isFetching.value = true;
-  const result = await Api.get(`/student/${query.value}`);
-  await store.dispatch("setStudents", result.data);
-  isFetching.value = false;
+  try {
+    isFetching.value = true;
+    const result = await Api.get(`/student/${query.value}`);
+    await store.dispatch("setStudents", result.data);
+  } catch (error) {
+    await errorHandler(error);
+  } finally {
+    isFetching.value = false;
+  }
 };
 const handleEdit = (student: TStudent) => {
   store.dispatch("setStudentToEdit", student);
@@ -147,7 +158,7 @@ const handleDelete = async () => {
       content: "Estudante deletado com sucesso!",
     });
   } catch (error) {
-    console.log(error);
+    await errorHandler(error);
     await store.dispatch("alert", {
       type: "error",
       content: "Erro ao tentar deletar estudante!",

@@ -5,16 +5,16 @@
     </figure>
     <v-form @submit.prevent="handleSubmit" v-model="formData.isValid">
       <v-text-field
-        v-model="formData.username"
+        v-model="formData.email"
+        :rules="[required, email]"
         type="text"
         label="Username"
-        :rules="[required]"
       />
       <v-text-field
         v-model="formData.password"
+        :rules="[required]"
         type="password"
         label="Password"
-        :rules="[required]"
       />
       <v-btn
         :loading="isFetching"
@@ -31,29 +31,41 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { required } from "../../utils/validators";
+import { required, email } from "../../utils/validators";
 import router from "../../routes";
+import { Api } from "../../api";
+import AppRouter from "../../routes";
+import errorHandler from "../../utils/errorHandler";
 
 type TFormData = {
   isValid: boolean;
-  username: string;
+  email: string;
   password: string;
 };
 const formData = ref<TFormData>({
   isValid: false,
-  username: "",
-  password: "",
+  email: "admin@mailinator.com",
+  password: "admin",
 });
 const isFetching = ref(false);
 
-const handleSubmit = () => {
-  function validateUser({ username, password }: TFormData) {
-    return !(username !== "admin" && password !== "admin");
-  }
-
-  if (formData.value.isValid && validateUser(formData.value)) {
-    isFetching.value = true;
-    setTimeout(() => router.push("/dashboard"), 2000);
+const handleSubmit = async () => {
+  if (formData.value.isValid) {
+    try {
+      isFetching.value = true;
+      const { isValid, ...attr } = formData.value;
+      const result = await Api.post("/auth/login", { ...attr });
+      if (result) {
+        localStorage.setItem("access_token", result.data.access_token);
+        localStorage.setItem("refresh_token", result.data.refresh_token);
+        isFetching.value = false;
+        await AppRouter.push({ path: "/dashboard" });
+      }
+    } catch (error) {
+      await errorHandler(error);
+    } finally {
+      isFetching.value = false;
+    }
   }
 };
 </script>
