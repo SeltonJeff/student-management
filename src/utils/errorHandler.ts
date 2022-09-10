@@ -1,5 +1,5 @@
 import AppRouter from "../routes";
-import store from "../store";
+import AppStore from "../store";
 
 export type TError = {
   code: string;
@@ -9,11 +9,13 @@ export type TError = {
 
 export default async function (error: unknown) {
   const apiError: any = error;
-  console.log("errorHandler: ", apiError.response.data);
+  await AppStore.dispatch("alert", {
+    type: "error",
+    content: apiError.response.data.message,
+  });
   if (apiError.response.data.status === 401) {
     localStorage.clear();
     await AppRouter.push({ path: "/login" });
-    await store.dispatch("setAlertVisible", false);
     //  hook to refresh_token here in future
   }
 }
