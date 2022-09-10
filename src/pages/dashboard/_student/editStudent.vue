@@ -8,8 +8,9 @@
           :rules="[required]"
           label="RA"
           placeholder="Informe o registro acadêmico"
-          type="number"
+          type="text"
           maxlength="6"
+          v-mask="'######'"
           disabled
         ></v-text-field>
         <v-text-field
@@ -34,6 +35,7 @@
           type="text"
           v-mask="'###.###.###-##'"
           maxlength="14"
+          disabled
         ></v-text-field>
 
         <v-row justify="end" class="action-buttons">
@@ -84,15 +86,13 @@ const isFetching = ref(false);
 
 const handleBack = () => AppRouter.go(-1);
 const handleSubmit = async () => {
-  const { name, email, cpf, ...attr } = formData;
+  const { name, email, ...attr } = formData;
   if (formData.isValid) {
     try {
       isFetching.value = true;
-      console.log(formData);
       await Api.patch(`/student/${attr.ra}`, {
         name,
         email,
-        cpf,
       });
       await store.dispatch("alert", {
         type: "success",

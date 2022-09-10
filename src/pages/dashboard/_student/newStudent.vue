@@ -8,8 +8,9 @@
           :rules="[required]"
           label="RA"
           placeholder="Informe o registro acadêmico"
-          type="number"
+          type="text"
           maxlength="6"
+          v-mask="'######'"
         ></v-text-field>
         <v-text-field
           v-model="formData.name"
