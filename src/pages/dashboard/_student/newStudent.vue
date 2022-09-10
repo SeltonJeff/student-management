@@ -5,33 +5,34 @@
       <v-form v-model="formData.isValid" @submit.prevent="handleSubmit">
         <v-text-field
           v-model="formData.ra"
+          :rules="[required]"
           label="RA"
           placeholder="Informe o registro acadêmico"
-          type="text"
-          :rules="[required]"
+          type="number"
+          maxlength="6"
         ></v-text-field>
         <v-text-field
           v-model="formData.name"
+          :rules="[required]"
           label="Nome"
           placeholder="Informe o nome completo"
           type="text"
-          :rules="[required]"
         ></v-text-field>
         <v-text-field
           v-model="formData.email"
+          :rules="[required, email]"
           label="Email"
           placeholder="Informe apenas um email"
           type="email"
-          :rules="[required, email]"
         ></v-text-field>
         <v-text-field
           v-model="formData.cpf"
+          :rules="[required, cpf]"
           label="CPF"
           placeholder="Informe o CPF"
           type="text"
           v-mask="'###.###.###-##'"
           maxlength="14"
-          :rules="[required, cpf]"
         ></v-text-field>
 
         <v-row justify="end" class="action-buttons">
@@ -101,7 +102,7 @@ const handleSubmit = async () => {
       });
     } finally {
       isFetching.value = false;
-      handleBack();
+      await AppRouter.push({ path: "/dashboard/student" });
     }
   }
 };
