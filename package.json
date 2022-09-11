@@ -5,13 +5,12 @@
   "type": "module",
   "scripts": {
     "start:dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "vite:preview": "vite preview"
   },
   "dependencies": {
     "@devindex/vue-mask": "^2.0.3",
     "@mdi/font": "^7.0.96",
-    "@types/": "devindex/vue-mask",
     "axios": "^0.27.2",
     "vue": "^3.2.37",
     "vue-router": "4",
@@ -20,6 +19,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",
+    "@types/": "devindex/vue-mask",
     "prettier": "^2.7.1",
     "sass": "^1.54.8",
     "typescript": "^4.6.4",
