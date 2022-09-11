@@ -98,10 +98,6 @@ const handleSubmit = async () => {
       });
     } catch (error) {
       await errorHandler(error);
-      await store.dispatch("alert", {
-        type: "error",
-        content: "Erro ao tentar cadastrar estudante!",
-      });
     } finally {
       isFetching.value = false;
       await AppRouter.push({ path: "/dashboard/student" });

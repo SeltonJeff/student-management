@@ -101,10 +101,6 @@ const handleSubmit = async () => {
       });
     } catch (error) {
       await errorHandler(error);
-      await store.dispatch("alert", {
-        type: "error",
-        content: "Erro ao editar dados do estudante!",
-      });
     } finally {
       isFetching.value = false;
       await AppRouter.push({ path: "/dashboard/student" });

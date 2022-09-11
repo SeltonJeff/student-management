@@ -11,7 +11,7 @@ export default async function (error: unknown) {
   const apiError: any = error;
   await AppStore.dispatch("alert", {
     type: "error",
-    content: apiError.response.data.message,
+    content: apiError.response.data.message || "Erro inesperado.",
   });
   if (apiError.response.data.status === 401) {
     localStorage.clear();
