@@ -1,31 +1,28 @@
-# Student Management
+<p align="center">
+  <img src="./public/a+_logo.svg" width="100" title="hover text">
+</p>
 
+# Student Management
 This application has developed with Vue3, TypeScript , Vuetify and Vite.
 
 ## Scrypt commands
-
 * `yarn start:dev` or `npm run start:dev`
 * `yarn build` or `npm run build`
 * `yarn vite:preview` or `npm run vite:preview`
 
 ## For use on local development
-
 * Use 'start:dev' command for serve it in development mode.
 
 ## For use on production
-
 * Use 'build' command and export 'dist' directory for you space and serve it.
 
 ## Project pattern used
-
 In this project, the Vue 3 TypeScript Setup structure was used to 
 develop all the pages and components of the application. 
 And also SASS SCSS for compose components style.
 
 ## Path structures
-
 ### How to use paths
-
 * aseets
     * For implements app assets
 * components
@@ -42,7 +39,6 @@ And also SASS SCSS for compose components style.
     * For develop development helpers
 
 ### All application paths
-
 1. aseets
    * scss
 2. components
@@ -62,7 +58,6 @@ And also SASS SCSS for compose components style.
 7. utils
 
 ## Dependences
-
 * @devindex/vue-mask
   * For apply input masks
 * @mdi/font
@@ -79,7 +74,6 @@ And also SASS SCSS for compose components style.
   * for implement application state
 
 ## Dev dependences
-
 * @vitejs/plugin-vue
   * For use vite with vue
 * @types/@devindex/vue-mask
@@ -97,10 +91,19 @@ And also SASS SCSS for compose components style.
 
 
 ## Proposed improvements
-
 * Do Header Component for apply on App Layout and use this for compose mobile responsive design.
 * Implement Index Dashboard for increment any future application modules.
 * Implement RefreshToken for update AccessToken.
 * Implement this application in Docker container for serve this in production mode.
 * Implement authentication middleware on application routes to verify session on internal route exchanges.
 * Implement Users Modules and Administration panel for this.
+
+## Auth flux
+<p align="center">
+  <img src="./Auth-flux.png" width="1000" title="hover text">
+</p>
+
+## Proposed gitflow
+<p align="center">
+  <img src="./proposed-gitflow.png" width="1000" title="hover text">
+</p>
