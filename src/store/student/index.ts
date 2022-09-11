@@ -1,6 +1,7 @@
 import { Module } from "vuex";
 
 export type TStudent = {
+  _id: string;
   ra: string;
   name: string;
   email: string;
@@ -14,7 +15,7 @@ export type TStudentState = {
 
 const initialState: TStudentState = {
   list: [],
-  studentToEdit: { ra: "", name: "", email: "", cpf: "" },
+  studentToEdit: { _id: "", ra: "", name: "", email: "", cpf: "" },
 };
 
 export const StudentStore: Module<TStudentState, any> = {

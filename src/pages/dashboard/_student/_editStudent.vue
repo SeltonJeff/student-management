@@ -87,11 +87,12 @@ const isFetching = ref(false);
 
 const handleBack = () => AppRouter.go(-1);
 const handleSubmit = async () => {
-  const { name, email, ...attr } = formData;
+  const { name, email } = formData;
+  const currentId = store.state.student.studentToEdit._id;
   if (formData.isValid) {
     try {
       isFetching.value = true;
-      await Api.patch(`/student/${attr.ra}`, {
+      await Api.patch(`/student/${currentId}`, {
         name,
         email,
       });

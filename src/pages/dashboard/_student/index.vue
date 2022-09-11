@@ -150,8 +150,8 @@ const handleDelete = async () => {
   try {
     isFetching.value = true;
     showConfirmDeleteStudent.value = false;
-    const { ra } = selectedStudentForDelete.value!;
-    const result = await Api.delete(`/student/${ra}`);
+    const { _id } = selectedStudentForDelete.value!;
+    const result = await Api.delete(`/student/${_id}`);
     console.log(result.data);
     await store.dispatch("alert", {
       type: "success",
