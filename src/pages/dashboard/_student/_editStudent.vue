@@ -19,6 +19,7 @@
           label="Nome"
           placeholder="Informe o nome completo"
           type="text"
+          class="uppercase"
         ></v-text-field>
         <v-text-field
           v-model="formData.email"
@@ -93,7 +94,7 @@ const handleSubmit = async () => {
     try {
       isFetching.value = true;
       await Api.patch(`/student/${currentId}`, {
-        name,
+        name: name.toUpperCase(),
         email,
       });
       await store.dispatch("alert", {
